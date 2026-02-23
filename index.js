@@ -98,3 +98,43 @@ userPromise.then(user => {
         }, 300);
     });
 }).catch(er=>console.log(er));
+
+
+//Bouns
+let userData=[];
+
+async function getUsers3(){
+    const response =await fetch("https://jsonplaceholder.typicode.com/users");
+    userData=await response.json();
+
+    const sel=document.getElementById("usersList");
+    const btn=document.getElementById("bn");
+
+    userData.forEach(user=>{
+        const option=document.createElement("option");
+
+        option.value=user.id;
+        option.textContent=user.name;
+        sel.appendChild(option);
+    });
+    btn.disabled = false;
+}
+
+document.getElementById("bn").addEventListener("click", () => {
+  const select = document.getElementById("usersList");
+  const selectedId = select.value;
+
+  const user = userData.find(u => u.id == selectedId);
+
+  const details = document.getElementById("details");
+
+  details.innerHTML = `
+    <h2>${user.name}</h2>
+    <p>Username: ${user.username}</p>
+    <p>Email: ${user.email}</p>
+    <p>Phone: ${user.phone}</p>
+    <p>Company: ${user.company.name}</p>
+  `;
+});
+
+getUsers3();
