@@ -3,6 +3,7 @@
 //our logic 
 //get data from server by fetch 
 //recive it and convet it to easily deal with it 
+
 //itereate on it and display it 
 function getUsers() {
     fetch("https://jsonplaceholder.typicode.com/users")
@@ -44,7 +45,7 @@ async function getData2() {
         const dv = document.getElementById("users");
         users.forEach(user => {
             const userDiv = document.createElement("div");
-                userDiv.innerHTML=`
+            userDiv.innerHTML = `
                 <h2>${user.name}</h2>
                 <ul>
                 <li>username: ${user.name}</li>
@@ -52,7 +53,7 @@ async function getData2() {
                 <li>phone: ${user.phone}</li>
                 <li>company-name: ${user.company.name}</li>
                 `;
-                dv.appendChild(userDiv);
+            dv.appendChild(userDiv);
         });
     } catch (er) { console.log(er); }
 
@@ -60,4 +61,40 @@ async function getData2() {
 
 getData2();//asynch await
 
+//Q3  create promise 
+const userPromise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve({
+            name: "Rania",
+            email: "Rania@gmail.com",
+            image_url: "./beaty.jpg"
 
+        });
+    }, 3000);
+
+
+});
+
+userPromise.then(user => {
+    const userDiv = document.createElement("div");
+    userDiv.innerHTML = `
+    <h2 style="background-color: rgb(98, 198, 245); ">${user.name}</h2>
+    <p>${user.email}</p>
+
+    `
+    document.body.appendChild(userDiv);
+
+    return user;//pass it to next then
+}).then(user=>{
+    return new Promise(resolve=>{
+
+        setTimeout(() => {
+            const img=document.createElement("img");
+            img.width=300;
+            img.setAttribute("height",200);
+            img.src=user.image_url;
+            document.body.appendChild(img);
+            resolve();
+        }, 300);
+    });
+}).catch(er=>console.log(er));
